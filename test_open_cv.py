@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import imutils
 from keras.models import load_model
+import matplotlib.pyplot as plt
 import numpy as np
 
 # parameters for loading data and images
@@ -20,6 +21,7 @@ cap = cv2.VideoCapture(1)
 while(cap.isOpened()):
     ret,frame = cap.read()
     if ret:
+        frame = imutils.resize(frame, width=300)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         #Display
