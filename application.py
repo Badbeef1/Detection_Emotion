@@ -68,16 +68,10 @@ while (camera.isOpened()):
                         cv2.putText(canvas, text, (10, (i * 35) + 23),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45,
                         (255, 255, 255), 2)
-                        cv2.putText(frameClone, label, (fX, fY - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-                        cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH),
-                                      (0, 0, 255), 2)
-        #    for c in range(0, 3):
-        #        frame[200:320, 10:130, c] = emoji_face[:, :, c] * \
-        #        (emoji_face[:, :, 3] / 255.0) + frame[200:320,
-        #        10:130, c] * (1.0 - emoji_face[:, :, 3] / 255.0)
 
-
+            cv2.putText(frameClone, label, (fX, fY - 10),
+            cv2.FONT_HER, 0.45, (0, 0, 255), 2)
+            cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH),(0, 0, 255), 2)
             cv2.imshow('your_face', frameClone)
             cv2.imshow("Probabilities", canvas)
             if cv2.waitKey(1) & 0xFF == ord('q'):
