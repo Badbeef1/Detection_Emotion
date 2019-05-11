@@ -14,7 +14,8 @@ emotion_classifier = load_model(emotion_model_path, compile=False)
 EMOTIONS = ["fache" ,"degouter","effrayer", "heureux", "triste", "surpris",
  "neutre"]
 
-cap = cv2.VideoCapture(0)
+# Tout dépendament de l'ordi la valeur peut changer entre 0 et 1 (webcam #1 ou 2/ avant ou arrière etc.)
+cap = cv2.VideoCapture(1)
 
 while(cap.isOpened()):
     ret,frame = cap.read()
