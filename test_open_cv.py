@@ -27,7 +27,7 @@ while(cap.isOpened()):
     ret,frame = cap.read()
 
     if ret:
-        frame = imutils.resize(frame, width=300)
+        frame = imutils.resize(frame, width=500,height=500)
         trouver_emotion(frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
