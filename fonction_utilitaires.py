@@ -81,7 +81,7 @@ def trouver_emotion(frame):
                         color=(255,255,255))
 
         cv2.putText(frameClone, label, (fX, fY - 5),
-                    fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale = 1, color=(255, 0, 255))
-        cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 2)
+                    fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale = 1, color=(255, 0, 0))
+        cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (255, 0, 0), 2)
         cv2.imshow('your_face', frameClone)
         cv2.imshow("Probabilities", canvas)
