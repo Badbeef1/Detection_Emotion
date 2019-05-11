@@ -46,7 +46,7 @@ def adj_detect_face(img):
 #cette fonction recoit en paramètre un image et permet d'afficer le visage
 def trouver_emotion(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30),
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5, minSize=(30, 30),
                                             flags=cv2.CASCADE_SCALE_IMAGE)
 
     canvas = np.zeros((250, 300, 3), dtype="uint8")
@@ -67,6 +67,7 @@ def trouver_emotion(frame):
         emotion_probability = np.max(preds)
         label = EMOTIONS[preds.argmax()]
 
+        #boucle qui permet d'afficher les pourcentages de toutes mes catégories (toutes mes émotions)
         for (i, (emotion, prob)) in enumerate(zip(EMOTIONS, preds)):
             # construct the label text
             text = "{}: {:.2f}%".format(emotion, prob * 100)
@@ -75,7 +76,7 @@ def trouver_emotion(frame):
             cv2.rectangle(canvas, (7, (i * 35) + 5),
                           (w, (i * 35) + 35), (0, 0, 255), -1)
             cv2.putText(canvas, text, (10, (i * 35) + 23),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45,
+                             0.45,
                         (255, 255, 255), 2)
 
         cv2.putText(frameClone, label, (fX, fY - 5),
