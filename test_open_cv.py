@@ -19,7 +19,7 @@ EMOTIONS = ["fache" ,"degouter","effrayer", "heureux", "triste", "surpris",
  "neutre"]
 
 # Tout dépendament de l'ordi la valeur peut changer entre 0 et 1 (webcam #1 ou 2/ avant ou arrière etc.)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # cap.isOpened nous permet de s'assurer que la caméra est ouverte, donc ça réduit les risques d'envoyer une image null à ma fonction
 while(cap.isOpened()):
