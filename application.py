@@ -27,8 +27,9 @@ cv2.namedWindow('your_face')
 camera = cv2.VideoCapture(0)
 #vérifier que la caméra est bien ouverte.
 while (camera.isOpened()):
-    if camera.read():
-        frame = camera.read()[0]
+    ret, frame = camera.read()
+    if ret:
+        #frame = camera.read()[0]
         #reading the frame
         frame = imutils.resize(frame,width=300)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
