@@ -25,8 +25,9 @@ EMOTIONS = ["fache" ,"degouter","effrayer", "heureux", "triste", "surpris",
 # starting video streaming (lancer une fenêtre qui utilise la webcam à l'aide de la librairie opencv)
 cv2.namedWindow('your_face')
 camera = cv2.VideoCapture(0)
-while True:
-    if camera.read()[0] != type(None):
+#vérifier que la caméra est bien ouverte.
+while (camera.isOpened()):
+    if camera.read():
         frame = camera.read()[0]
         #reading the frame
         frame = imutils.resize(frame,width=300)
