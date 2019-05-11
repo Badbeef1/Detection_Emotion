@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import imutils
 from keras.models import load_model
+from fonction_utilitaires import detect_face
+from fonction_utilitaires import adj_detect_face
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -24,8 +26,11 @@ while(cap.isOpened()):
         frame = imutils.resize(frame, width=300)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        #Display
-        cv2.imshow('frame', gray)
+        #trouver le visage dans l'image.
+        frame = adj_detect_face(frame)
+
+        #afficher
+        cv2.imshow('frame', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
