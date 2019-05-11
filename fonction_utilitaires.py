@@ -76,8 +76,9 @@ def trouver_emotion(frame):
             cv2.rectangle(canvas, (7, (i * 35) + 5),
                           (w, (i * 35) + 35), (0, 0, 255), -1)
             cv2.putText(canvas, text, (10, (i * 35) + 23),
-                             0.45,
-                        (255, 255, 255), 2)
+                        fontFace=cv2.FONT_HERSHEY_SCRIPT_COMPLEX,
+                        fontScale=1,
+                        color=(255,255,255))
 
         cv2.putText(frameClone, label, (fX, fY - 5),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
