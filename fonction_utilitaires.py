@@ -80,8 +80,41 @@ def trouver_emotion(frame):
                         fontScale=0.75,
                         color=(255,255,255))
 
+        #Écrire l'émotion qui est la plus probable du modèle.
         cv2.putText(frameClone, label, (fX, fY - 5),
                     fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 0.90, color=(211, 149, 56))
         cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (211, 149, 56), 2)
-        cv2.imshow('your_face', frameClone)
-        cv2.imshow("Probabilities", canvas)
+
+        #frameClone = cv2.addWeighted(frameClone,0.5,emoji,0.5,0.0)
+
+        strPath = trouverEmoji(label)
+        # print (strPath)
+
+
+        emoji = cv2.imread(strPath,-1)
+        emoji = imutils.resize(emoji, width=32,height=32)
+        emoji = cv2.cvtColor(emoji,cv2.COLOR_BGR2BGRA)
+        # w, h, c = emoji.shape
+
+        frameCloneAlpha = cv2.cvtColor(frameClone, cv2.COLOR_BGR2BGRA)
+        frameCloneAlpha[fY:fY + 32 ,fX:fX + 32] = emoji
+
+        cv2.imshow('Detection Emotion', frameCloneAlpha)
+        #cv2.imshow('Emoji', emoji)
+
+        cv2.imshow("Statistiques", canvas)
+
+#Cette fonction me permet de retourner le chemin de l'émotion qui représente l'émotion passé en parametre.
+def trouverEmoji(emoji):
+    switcher = {
+        "fache": "emoji\mad.png",
+        "degouter": "emoji\disgust.png",
+        "effrayer": "emoji\effraye.png",
+        "heureux": "emoji\happy.png",
+        "triste": "emoji\sad.png",
+        "surpris": "emoji\surpris.png",
+        "neutre": 'emoji\\neutral.png'
+    }
+    return switcher.get(emoji, "nothing")
+
+
