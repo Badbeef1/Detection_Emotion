@@ -58,10 +58,6 @@ while (camera.isOpened()):
                         # construct the label text
                         text = "{}: {:.2f}%".format(emotion, prob * 100)
 
-                        # draw the label + probability bar on the canvas
-                       # emoji_face = feelings_faces[np.argmax(preds)]
-
-
                         w = int(prob * 300)
                         cv2.rectangle(canvas, (7, (i * 35) + 5),
                         (w, (i * 35) + 35), (0, 0, 255), -1)

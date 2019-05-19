@@ -5,8 +5,8 @@ Description: Train emotion classification model
 from keras.callbacks import CSVLogger, ModelCheckpoint, EarlyStopping
 from keras.callbacks import ReduceLROnPlateau
 from keras.preprocessing.image import ImageDataGenerator
-from charger_dataset import load_dataset
-from charger_dataset import preprocess_input
+from fonction_utilitaires import charger_dataset
+from fonction_utilitaires import normaliser_entree
 from models.cnn import mini_XCEPTION
 from sklearn.model_selection import train_test_split
 
@@ -56,8 +56,8 @@ model_checkpoint = ModelCheckpoint(model_names, 'val_loss', verbose=1,
 callbacks = [model_checkpoint, csv_logger, early_stop, reduce_lr]
 
 # loading dataset
-faces, emotions = load_dataset()
-faces = preprocess_input(faces)
+faces, emotions = charger_dataset()
+faces = normaliser_entree(faces)
 num_samples, num_classes = emotions.shape
 xtrain, xtest,ytrain,ytest = train_test_split(faces, emotions,test_size=0.2,shuffle=True)
 model.fit_generator(data_generator.flow(xtrain, ytrain,

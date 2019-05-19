@@ -3,15 +3,26 @@ import cv2
 import imutils
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
+from sklearn.model_selection import train_test_split
+import sklearn as skl
+import pandas as pd
 #variables de classes
 face_cascade = cv2.CascadeClassifier('haarcascade_files/haarcascade_frontalface_default.xml')
 emotion_model_path = 'models/_mini_XCEPTION.56-0.64.hdf5'
 emotion_classifier = load_model(emotion_model_path, compile=False)
+
+#tableau de string qui contient l'ensemble de mes catégories d'émotions.
 EMOTIONS = ["fache" ,"degouter","effrayer", "heureux", "triste", "surpris",
  "neutre"]
+
+#chemin du dataset
+dataset_path = 'fer2013/fer2013.csv'
+#image qu'on envoie au model (48px par 48px)
+image_size = (48, 48)
+
+# ----------------------------------------------------------------------------------------------------------------------------------------
+# anciennes fonctions dans mon introduction à la librairie openCV
 def detect_face(img):
-
-
     face_img = img.copy()
     target = ["fache", "degouter", "effrayer", "heureux", "triste", "surpris","neutre"]
 
@@ -33,6 +44,9 @@ def detect_face(img):
     return face_img
 
 
+
+# ----------------------------------------------------------------------------------------------------------------------------------------
+# anciennes fonctions dans mon introduction à la librairie openCV
 def adj_detect_face(img):
     face_img = img.copy()
 
@@ -42,7 +56,34 @@ def adj_detect_face(img):
         cv2.rectangle(face_img, (x, y), (x + w, y + h), (255, 255, 255), 2)
 
     return face_img
+# ----------------------------------------------------------------------------------------------------------------------------------------
 
+# Ces fonctions permettent de charger les données du dataset (fer2013.csv)
+def charger_dataset():
+    donnees = pd.read_csv(dataset_path)
+    pixels = donnees['pixels'].tolist()
+    largeur, hauteur = 48, 48
+    faces = []
+    for pixel_sequence in pixels:
+        face = [int(pixel) for pixel in pixel_sequence.split(' ')]
+        face = np.asarray(face).reshape(largeur, hauteur)
+        face = cv2.resize(face.astype('uint8'), image_size)
+        faces.append(face.astype('float32'))
+    faces = np.asarray(faces)
+    faces = np.expand_dims(faces, -1)
+    emotions = pd.get_dummies(donnees['emotion']).as_matrix()
+    return faces, emotions
+
+def normaliser_entree(x, v2=True):
+    x = x.astype('float32')
+    x = x / 255.0
+    if v2:
+        x = x - 0.5
+        x = x * 2.0
+    return x
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------------
 #cette fonction recoit en paramètre un image et permet d'afficer le visage
 def trouver_emotion(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -85,25 +126,23 @@ def trouver_emotion(frame):
                     fontFace=cv2.FONT_HERSHEY_COMPLEX_SMALL, fontScale = 0.90, color=(211, 149, 56))
         cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (211, 149, 56), 2)
 
-        #frameClone = cv2.addWeighted(frameClone,0.5,emoji,0.5,0.0)
 
         strPath = trouverEmoji(label)
-        # print (strPath)
-
 
         emoji = cv2.imread(strPath,-1)
         emoji = imutils.resize(emoji, width=32,height=32)
         emoji = cv2.cvtColor(emoji,cv2.COLOR_BGR2BGRA)
-        # w, h, c = emoji.shape
 
         frameCloneAlpha = cv2.cvtColor(frameClone, cv2.COLOR_BGR2BGRA)
         frameCloneAlpha[fY:fY + 32 ,fX:fX + 32] = emoji
 
         cv2.imshow('Detection Emotion', frameCloneAlpha)
-        #cv2.imshow('Emoji', emoji)
 
         cv2.imshow("Statistiques", canvas)
+# ----------------------------------------------------------------------------------------------------------------------------------------
 
+
+# ----------------------------------------------------------------------------------------------------------------------------------------
 #Cette fonction me permet de retourner le chemin de l'émotion qui représente l'émotion passé en parametre.
 def trouverEmoji(emoji):
     switcher = {
@@ -116,5 +155,6 @@ def trouverEmoji(emoji):
         "neutre": 'emoji\\neutral.png'
     }
     return switcher.get(emoji, "nothing")
+# ----------------------------------------------------------------------------------------------------------------------------------------
 
 
